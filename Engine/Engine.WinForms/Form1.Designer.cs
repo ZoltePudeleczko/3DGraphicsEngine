@@ -34,18 +34,21 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.loadLabel = new System.Windows.Forms.Label();
             this.loadButton = new System.Windows.Forms.Button();
-            this.drawPointsCheckBox = new System.Windows.Forms.CheckBox();
-            this.drawFacesCheckBox = new System.Windows.Forms.CheckBox();
-            this.drawEdgesCheckBox = new System.Windows.Forms.CheckBox();
-            this.FPSLabel = new System.Windows.Forms.Label();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.rotationLabel = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.solidFaces = new System.Windows.Forms.RadioButton();
-            this.textureFaces = new System.Windows.Forms.RadioButton();
             this.zBufforCheckBox = new System.Windows.Forms.CheckBox();
+            this.textureFaces = new System.Windows.Forms.RadioButton();
+            this.solidFaces = new System.Windows.Forms.RadioButton();
+            this.drawFacesCheckBox = new System.Windows.Forms.CheckBox();
+            this.drawPointsCheckBox = new System.Windows.Forms.CheckBox();
+            this.drawEdgesCheckBox = new System.Windows.Forms.CheckBox();
+            this.FPSLabel = new System.Windows.Forms.Label();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.backfaceCullingCheckBox = new System.Windows.Forms.CheckBox();
+            this.loadTextureButton = new System.Windows.Forms.Button();
+            this.textureView = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.raster)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
@@ -53,6 +56,7 @@
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.textureView)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -122,54 +126,6 @@
             this.loadButton.UseVisualStyleBackColor = true;
             this.loadButton.Click += new System.EventHandler(this.loadButton_Click);
             // 
-            // drawPointsCheckBox
-            // 
-            this.drawPointsCheckBox.AutoSize = true;
-            this.drawPointsCheckBox.Checked = true;
-            this.drawPointsCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.drawPointsCheckBox.Location = new System.Drawing.Point(3, 19);
-            this.drawPointsCheckBox.Name = "drawPointsCheckBox";
-            this.drawPointsCheckBox.Size = new System.Drawing.Size(83, 17);
-            this.drawPointsCheckBox.TabIndex = 4;
-            this.drawPointsCheckBox.Text = "Draw Points";
-            this.drawPointsCheckBox.UseVisualStyleBackColor = true;
-            this.drawPointsCheckBox.CheckedChanged += new System.EventHandler(this.refreshScreenEvent);
-            // 
-            // drawFacesCheckBox
-            // 
-            this.drawFacesCheckBox.AutoSize = true;
-            this.drawFacesCheckBox.Location = new System.Drawing.Point(3, 19);
-            this.drawFacesCheckBox.Name = "drawFacesCheckBox";
-            this.drawFacesCheckBox.Size = new System.Drawing.Size(83, 17);
-            this.drawFacesCheckBox.TabIndex = 6;
-            this.drawFacesCheckBox.Text = "Draw Faces";
-            this.drawFacesCheckBox.UseVisualStyleBackColor = true;
-            this.drawFacesCheckBox.CheckedChanged += new System.EventHandler(this.refreshScreenEvent);
-            // 
-            // drawEdgesCheckBox
-            // 
-            this.drawEdgesCheckBox.AutoSize = true;
-            this.drawEdgesCheckBox.Location = new System.Drawing.Point(92, 19);
-            this.drawEdgesCheckBox.Name = "drawEdgesCheckBox";
-            this.drawEdgesCheckBox.Size = new System.Drawing.Size(84, 17);
-            this.drawEdgesCheckBox.TabIndex = 5;
-            this.drawEdgesCheckBox.Text = "Draw Edges";
-            this.drawEdgesCheckBox.UseVisualStyleBackColor = true;
-            this.drawEdgesCheckBox.CheckedChanged += new System.EventHandler(this.refreshScreenEvent);
-            // 
-            // FPSLabel
-            // 
-            this.FPSLabel.AutoSize = true;
-            this.FPSLabel.Location = new System.Drawing.Point(3, 332);
-            this.FPSLabel.Name = "FPSLabel";
-            this.FPSLabel.Size = new System.Drawing.Size(53, 13);
-            this.FPSLabel.TabIndex = 3;
-            this.FPSLabel.Text = "FPSLabel";
-            // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.FileName = "openFileDialog1";
-            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.rotationLabel);
@@ -196,46 +152,26 @@
             this.groupBox3.Controls.Add(this.drawEdgesCheckBox);
             this.groupBox3.Location = new System.Drawing.Point(3, 178);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(182, 151);
+            this.groupBox3.Size = new System.Drawing.Size(182, 210);
             this.groupBox3.TabIndex = 8;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "What to draw";
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.textureView);
+            this.groupBox4.Controls.Add(this.loadTextureButton);
+            this.groupBox4.Controls.Add(this.backfaceCullingCheckBox);
             this.groupBox4.Controls.Add(this.zBufforCheckBox);
             this.groupBox4.Controls.Add(this.textureFaces);
             this.groupBox4.Controls.Add(this.solidFaces);
             this.groupBox4.Controls.Add(this.drawFacesCheckBox);
             this.groupBox4.Location = new System.Drawing.Point(3, 42);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(173, 100);
+            this.groupBox4.Size = new System.Drawing.Size(173, 129);
             this.groupBox4.TabIndex = 6;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Drawing Faces";
-            // 
-            // solidFaces
-            // 
-            this.solidFaces.AutoSize = true;
-            this.solidFaces.Checked = true;
-            this.solidFaces.Location = new System.Drawing.Point(3, 43);
-            this.solidFaces.Name = "solidFaces";
-            this.solidFaces.Size = new System.Drawing.Size(74, 17);
-            this.solidFaces.TabIndex = 7;
-            this.solidFaces.TabStop = true;
-            this.solidFaces.Text = "Solid color";
-            this.solidFaces.UseVisualStyleBackColor = true;
-            this.solidFaces.CheckedChanged += new System.EventHandler(this.refreshScreenEvent);
-            // 
-            // textureFaces
-            // 
-            this.textureFaces.AutoSize = true;
-            this.textureFaces.Location = new System.Drawing.Point(3, 66);
-            this.textureFaces.Name = "textureFaces";
-            this.textureFaces.Size = new System.Drawing.Size(61, 17);
-            this.textureFaces.TabIndex = 8;
-            this.textureFaces.Text = "Texture";
-            this.textureFaces.UseVisualStyleBackColor = true;
             // 
             // zBufforCheckBox
             // 
@@ -247,6 +183,105 @@
             this.zBufforCheckBox.Text = "Z Buffor";
             this.zBufforCheckBox.UseVisualStyleBackColor = true;
             this.zBufforCheckBox.CheckedChanged += new System.EventHandler(this.refreshScreenEvent);
+            // 
+            // textureFaces
+            // 
+            this.textureFaces.AutoSize = true;
+            this.textureFaces.Location = new System.Drawing.Point(3, 103);
+            this.textureFaces.Name = "textureFaces";
+            this.textureFaces.Size = new System.Drawing.Size(61, 17);
+            this.textureFaces.TabIndex = 8;
+            this.textureFaces.Text = "Texture";
+            this.textureFaces.UseVisualStyleBackColor = true;
+            // 
+            // solidFaces
+            // 
+            this.solidFaces.AutoSize = true;
+            this.solidFaces.Checked = true;
+            this.solidFaces.Location = new System.Drawing.Point(3, 80);
+            this.solidFaces.Name = "solidFaces";
+            this.solidFaces.Size = new System.Drawing.Size(74, 17);
+            this.solidFaces.TabIndex = 7;
+            this.solidFaces.TabStop = true;
+            this.solidFaces.Text = "Solid color";
+            this.solidFaces.UseVisualStyleBackColor = true;
+            this.solidFaces.CheckedChanged += new System.EventHandler(this.refreshScreenEvent);
+            // 
+            // drawFacesCheckBox
+            // 
+            this.drawFacesCheckBox.AutoSize = true;
+            this.drawFacesCheckBox.Location = new System.Drawing.Point(3, 19);
+            this.drawFacesCheckBox.Name = "drawFacesCheckBox";
+            this.drawFacesCheckBox.Size = new System.Drawing.Size(83, 17);
+            this.drawFacesCheckBox.TabIndex = 6;
+            this.drawFacesCheckBox.Text = "Draw Faces";
+            this.drawFacesCheckBox.UseVisualStyleBackColor = true;
+            this.drawFacesCheckBox.CheckedChanged += new System.EventHandler(this.refreshScreenEvent);
+            // 
+            // drawPointsCheckBox
+            // 
+            this.drawPointsCheckBox.AutoSize = true;
+            this.drawPointsCheckBox.Checked = true;
+            this.drawPointsCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.drawPointsCheckBox.Location = new System.Drawing.Point(3, 19);
+            this.drawPointsCheckBox.Name = "drawPointsCheckBox";
+            this.drawPointsCheckBox.Size = new System.Drawing.Size(83, 17);
+            this.drawPointsCheckBox.TabIndex = 4;
+            this.drawPointsCheckBox.Text = "Draw Points";
+            this.drawPointsCheckBox.UseVisualStyleBackColor = true;
+            this.drawPointsCheckBox.CheckedChanged += new System.EventHandler(this.refreshScreenEvent);
+            // 
+            // drawEdgesCheckBox
+            // 
+            this.drawEdgesCheckBox.AutoSize = true;
+            this.drawEdgesCheckBox.Location = new System.Drawing.Point(92, 19);
+            this.drawEdgesCheckBox.Name = "drawEdgesCheckBox";
+            this.drawEdgesCheckBox.Size = new System.Drawing.Size(84, 17);
+            this.drawEdgesCheckBox.TabIndex = 5;
+            this.drawEdgesCheckBox.Text = "Draw Edges";
+            this.drawEdgesCheckBox.UseVisualStyleBackColor = true;
+            this.drawEdgesCheckBox.CheckedChanged += new System.EventHandler(this.refreshScreenEvent);
+            // 
+            // FPSLabel
+            // 
+            this.FPSLabel.AutoSize = true;
+            this.FPSLabel.Location = new System.Drawing.Point(3, 391);
+            this.FPSLabel.Name = "FPSLabel";
+            this.FPSLabel.Size = new System.Drawing.Size(53, 13);
+            this.FPSLabel.TabIndex = 3;
+            this.FPSLabel.Text = "FPSLabel";
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // backfaceCullingCheckBox
+            // 
+            this.backfaceCullingCheckBox.AutoSize = true;
+            this.backfaceCullingCheckBox.Location = new System.Drawing.Point(3, 42);
+            this.backfaceCullingCheckBox.Name = "backfaceCullingCheckBox";
+            this.backfaceCullingCheckBox.Size = new System.Drawing.Size(105, 17);
+            this.backfaceCullingCheckBox.TabIndex = 10;
+            this.backfaceCullingCheckBox.Text = "Backface culling";
+            this.backfaceCullingCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // loadTextureButton
+            // 
+            this.loadTextureButton.Location = new System.Drawing.Point(60, 100);
+            this.loadTextureButton.Name = "loadTextureButton";
+            this.loadTextureButton.Size = new System.Drawing.Size(78, 23);
+            this.loadTextureButton.TabIndex = 11;
+            this.loadTextureButton.Text = "Load Texture";
+            this.loadTextureButton.UseVisualStyleBackColor = true;
+            this.loadTextureButton.Click += new System.EventHandler(this.loadTextureButton_Click);
+            // 
+            // textureView
+            // 
+            this.textureView.Location = new System.Drawing.Point(145, 100);
+            this.textureView.Name = "textureView";
+            this.textureView.Size = new System.Drawing.Size(22, 23);
+            this.textureView.TabIndex = 12;
+            this.textureView.TabStop = false;
             // 
             // Form1
             // 
@@ -272,6 +307,7 @@
             this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.textureView)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -296,6 +332,9 @@
         private System.Windows.Forms.RadioButton textureFaces;
         private System.Windows.Forms.RadioButton solidFaces;
         private System.Windows.Forms.CheckBox zBufforCheckBox;
+        private System.Windows.Forms.PictureBox textureView;
+        private System.Windows.Forms.Button loadTextureButton;
+        private System.Windows.Forms.CheckBox backfaceCullingCheckBox;
     }
 }
 

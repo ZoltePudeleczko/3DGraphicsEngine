@@ -22,11 +22,11 @@ namespace Engine.WinForms
 
         private Point[] points;
 
-        private Vector3 cameraPosition = new Vector3(0, 0, 0); //3D position of camera (point that is representing the camera)
-        private Vector3 cameraTarget = new Vector3(0, 0, 0);
-        private Vector3 upVector = new Vector3(0, 0, 1);
+        private Vector3 cameraPosition;
+        private Vector3 cameraTarget;
+        private Vector3 upVector;
 
-        private Vector3 objectRotation = new Vector3(0, 0, 0);
+        private Vector3 objectRotation;
 
         private float nearPlaneDistance = 1;
         private float farPlaneDistance = 100;
@@ -57,6 +57,7 @@ namespace Engine.WinForms
                 for (int j = 0; j < raster.Height; j++)
                     zLevel[i, j] = float.MaxValue;
             }
+            aspectRatio = (float)raster.Width / raster.Height;
             pointsZLevel = new float[vertices.Count];
             points = new Point[vertices.Count];
             Matrix4x4 LookAt = Matrix4x4.CreateLookAt(cameraPosition, cameraTarget, upVector);
@@ -109,6 +110,17 @@ namespace Engine.WinForms
                     for (int i = 0; i < f.Count; i++)
                     {
                         facePointsZ[i] = pointsZLevel[f.VerticesInd[i]];
+                    }
+                    if (backfaceCullingCheckBox.Checked)
+                    {
+                        Vector3 v12 = new Vector3(facePoints[1].X - facePoints[0].X, facePoints[1].Y - facePoints[0].Y, facePointsZ[1] - facePointsZ[0]);
+                        Vector3 v13 = new Vector3(facePoints[f.Count - 1].X - facePoints[0].X, facePoints[f.Count - 1].Y - facePoints[0].Y, facePointsZ[f.Count - 1] - facePointsZ[0]);
+                        Vector3 N = Vector3.Cross(v12, v13);
+                        Vector3 S = new Vector3(cameraPosition.X - facePoints[0].X, cameraPosition.Y - facePoints[0].Y, cameraPosition.Z - facePointsZ[0]);
+
+                        float dotProduct = N.X * S.X + N.Y * S.Y + N.Z * S.Z;
+                        if (dotProduct < 0)
+                            continue;
                     }
                     f.Draw(ref b, facePoints, ref zLevel, facePointsZ, zBufforCheckBox.Checked);
                 }
@@ -178,6 +190,7 @@ namespace Engine.WinForms
             cameraPosition = new Vector3(10, 0.5f, 0.5f);
             cameraTarget = new Vector3(0, 0.5f, 0.5f);
             objectRotation = new Vector3(0, 0, 0);
+            upVector = new Vector3(0, 0, 1);
 
             drawFacesCheckBox.Checked = false;
             drawEdgesCheckBox.Checked = false;
@@ -261,6 +274,11 @@ namespace Engine.WinForms
         private void refreshScreenEvent(object sender, EventArgs e)
         {
             refreshScreen();
+        }
+
+        private void loadTextureButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
