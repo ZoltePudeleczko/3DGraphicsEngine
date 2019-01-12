@@ -14,10 +14,10 @@ namespace Engine.WinForms
         public float Point1Z { get; set; }
         public float Point2Z { get; set; }
 
-        public Line(PointF p1, PointF p2, float p1Z, float p2Z)
+        public Line(Point p1, Point p2, float p1Z, float p2Z)
         {
-            Point1 = new Point((int)p1.X, (int)p1.Y);
-            Point2 = new Point((int)p2.X, (int)p2.Y);
+            Point1 = p1;
+            Point2 = p2;
             Point1Z = p1Z;
             Point2Z = p2Z;
         }

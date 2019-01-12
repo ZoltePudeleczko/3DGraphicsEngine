@@ -38,7 +38,7 @@ namespace Engine.WinForms
             FaceColor = faceColor;
         }
 
-        public void Draw(ref Bitmap b, PointF[] points, ref float[,] zLevel, float[] pointsZLevel)
+        public void Draw(ref Bitmap b, Point[] points, ref float[,] zLevel, float[] pointsZLevel, bool zBuffor)
         {
             int maxy = 0;
             int miny = int.MaxValue;
@@ -83,7 +83,7 @@ namespace Engine.WinForms
                     move = ((float)l.Point2.X - (float)l.Point1.X) / ((float)l.Point2.Y - (float)l.Point1.Y);
                 }
                 z = l.Point1Z;
-                zMove = ((float)l.Point1Z - (float)l.Point2Z) / ((float)l.Point1Z - (float)l.Point2Z);
+                zMove = ((float)l.Point2Z - (float)l.Point1Z) / Math.Abs(l.Point1.Y - l.Point2.Y);
                 if (ymin - miny < scanline)
                     scanline = ymin - miny;
                 Edge ne = new Edge(ymax - miny, xmin, move, z, zMove);
@@ -119,13 +119,19 @@ namespace Engine.WinForms
 
                 for (int i = 0; i < AET.Count - 1; i += 2)
                 {
+                    float actZ = AET[i].Z;
+                    float actZChange = (AET[i + 1].Z - AET[i].Z) / (AET[i + 1].Xmin - AET[i].Xmin);
                     for (int j = (int)AET[i].Xmin; j <= (int)AET[i + 1].Xmin; j++)
                     {
-                        if (j >= 0 && scanline + miny >= 0 && scanline + miny < b.Height && j < b.Width)// && AET[i].Z > zLevel[j, scanline + miny])
+                        if (j >= 0 && scanline + miny >= 0 && scanline + miny < b.Height && j < b.Width)
                         {
-                            b.SetPixel(j, scanline + miny, FaceColor);
-                            zLevel[j, scanline + miny] = AET[i].Z;
+                            if (!zBuffor || actZ < zLevel[j, scanline + miny])
+                            {
+                                b.SetPixel(j, scanline + miny, FaceColor);
+                                zLevel[j, scanline + miny] = actZ;
+                            }
                         }
+                        actZ += actZChange;
                     }
                 }
 
@@ -134,7 +140,8 @@ namespace Engine.WinForms
                 for (int i = 0; i < AET.Count; i++)
                 {
                     AET[i].Xmin = (float)AET[i].Xmin + AET[i].Move;
-                    AET[i].Z = (float)AET[i].Z + AET[i].ZMove;
+                    if (!float.IsNaN(AET[i].ZMove))
+                        AET[i].Z = (float)AET[i].Z + AET[i].ZMove;
                 }
             }
         }
