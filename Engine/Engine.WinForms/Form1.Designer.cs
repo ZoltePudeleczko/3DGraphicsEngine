@@ -264,6 +264,7 @@
             this.backfaceCullingCheckBox.TabIndex = 10;
             this.backfaceCullingCheckBox.Text = "Backface culling";
             this.backfaceCullingCheckBox.UseVisualStyleBackColor = true;
+            this.backfaceCullingCheckBox.CheckedChanged += new System.EventHandler(this.refreshScreenEvent);
             // 
             // loadTextureButton
             // 
@@ -280,6 +281,7 @@
             this.textureView.Location = new System.Drawing.Point(145, 100);
             this.textureView.Name = "textureView";
             this.textureView.Size = new System.Drawing.Size(22, 23);
+            this.textureView.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.textureView.TabIndex = 12;
             this.textureView.TabStop = false;
             // 

@@ -38,9 +38,16 @@ namespace Engine.WinForms
 
         private int fps;
 
+        private Bitmap texture;
+
         public Form1()
         {
             InitializeComponent();
+
+            texture = new Bitmap(100, 100);
+            Graphics g = Graphics.FromImage(texture);
+            g.Clear(Color.Black);
+            textureView.Image = texture;
 
             this.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.raster_MouseWheel);
 
@@ -78,7 +85,7 @@ namespace Engine.WinForms
                     X = (int)(v.X * raster.Width + raster.Width / 2),
                     Y = (int)(v.Y * raster.Height + raster.Height / 2)
                 };
-                pointsZLevel[i] = v.Z * 10000;
+                pointsZLevel[i] = v.Z;
                 points[i] = p;
             }
         }
@@ -99,7 +106,7 @@ namespace Engine.WinForms
             g.Clear(Color.White);
             if (drawFacesCheckBox.Checked)
             {
-                foreach (Face f in faces) //draw faces (solid color)
+                foreach (Face f in faces) //draw faces
                 {
                     Point[] facePoints = new Point[f.Count];
                     for (int i = 0; i < f.Count; i++)
@@ -122,7 +129,10 @@ namespace Engine.WinForms
                         if (dotProduct < 0)
                             continue;
                     }
-                    f.Draw(ref b, facePoints, ref zLevel, facePointsZ, zBufforCheckBox.Checked);
+                    if (textureFaces.Checked)
+                        f.Draw(ref b, facePoints, ref zLevel, facePointsZ, zBufforCheckBox.Checked, texture);
+                    else
+                        f.Draw(ref b, facePoints, ref zLevel, facePointsZ, zBufforCheckBox.Checked);
                 }
             }
             if (drawPointsCheckBox.Checked)
@@ -217,7 +227,10 @@ namespace Engine.WinForms
 
         private void raster_MouseWheel(object sender, MouseEventArgs e)
         {
-            cameraPosition.X -= (float)e.Delta / 60;
+            if (ModifierKeys == Keys.Shift)
+                cameraPosition.X -= (float)e.Delta / 1000;
+            else
+                cameraPosition.X -= (float)e.Delta / 100;
             refreshScreen();
         }
 
@@ -278,7 +291,16 @@ namespace Engine.WinForms
 
         private void loadTextureButton_Click(object sender, EventArgs e)
         {
+            openFileDialog1.Title = "Load texture";
+            openFileDialog1.Filter = "JPG Files|*.jpg|PNG files|*.png*|BMP files|*.bmp*|All files (*.*)|*.*";
 
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                texture = new Bitmap(openFileDialog1.OpenFile());
+                textureView.Image = texture;
+                textureView.Refresh();
+                refreshScreen();
+            }
         }
     }
 }
