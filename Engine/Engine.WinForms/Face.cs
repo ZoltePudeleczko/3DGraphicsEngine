@@ -38,7 +38,7 @@ namespace Engine.WinForms
             FaceColor = faceColor;
         }
 
-        public void Draw(ref Bitmap b, Point[] points, ref float[,] zLevel, float[] pointsZLevel, bool zBuffor, Bitmap texture = null)
+        public void Draw(ref Bitmap b, Point[] points, ref float[,] zLevel, float[] pointsZLevel, bool zBuffor, float alpha = 1.0f, Bitmap texture = null)
         {
             int maxy = 0;
             int miny = int.MaxValue;
@@ -129,7 +129,19 @@ namespace Engine.WinForms
                             {
                                 if (texture == null) //drawing solid color
                                 {
-                                    b.SetPixel(j, scanline + miny, FaceColor);
+                                    if (alpha == 1.0f)
+                                    {
+                                        b.SetPixel(j, scanline + miny, FaceColor);
+                                    }
+                                    else
+                                    {
+                                        Color oldColor = b.GetPixel(j, scanline + miny);
+                                        int nRed = (int)(alpha * FaceColor.R + (1 - alpha) * oldColor.R);
+                                        int nGreen = (int)(alpha * FaceColor.G + (1 - alpha) * oldColor.G);
+                                        int nBlue = (int)(alpha * FaceColor.B + (1 - alpha) * oldColor.B);
+                                        Color newColor = Color.FromArgb(nRed, nGreen, nBlue);
+                                        b.SetPixel(j, scanline + miny, newColor);
+                                    }
                                 }
                                 else //drawing texture
                                 {
@@ -141,7 +153,19 @@ namespace Engine.WinForms
                                         texturex = -texturex;
                                     if (texturey < 0)
                                         texturey = -texturey;
-                                    b.SetPixel(j, scanline + miny, texture.GetPixel(texturex, texturey));
+                                    if (alpha == 1.0f)
+                                    {
+                                        b.SetPixel(j, scanline + miny, texture.GetPixel(texturex, texturey));
+                                    }
+                                    {
+                                        Color oldColor = b.GetPixel(j, scanline + miny);
+                                        Color textureColor = texture.GetPixel(texturex, texturey);
+                                        int nRed = (int)(alpha * textureColor.R + (1 - alpha) * oldColor.R);
+                                        int nGreen = (int)(alpha * textureColor.G + (1 - alpha) * oldColor.G);
+                                        int nBlue = (int)(alpha * textureColor.B + (1 - alpha) * oldColor.B);
+                                        Color newColor = Color.FromArgb(nRed, nGreen, nBlue);
+                                        b.SetPixel(j, scanline + miny, newColor);
+                                    }
                                 }
                                 zLevel[j, scanline + miny] = actZ;
                             }

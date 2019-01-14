@@ -35,12 +35,15 @@ namespace Engine.WinForms
 
         private float[,] zLevel;
         private float[] pointsZLevel;
+        private float[] backfacePointsZLevel;
 
         private int fps;
 
         private Bitmap texture;
 
         private Color fogColor = Color.Gray;
+
+        private bool[] transparentFaces;
 
         public Form1()
         {
@@ -72,6 +75,7 @@ namespace Engine.WinForms
             }
             aspectRatio = (float)raster.Width / raster.Height;
             pointsZLevel = new float[vertices.Count];
+            backfacePointsZLevel = new float[vertices.Count];
             points = new Point[vertices.Count];
             Matrix4x4 LookAt = Matrix4x4.CreateLookAt(cameraPosition, cameraTarget, upVector);
             Matrix4x4 Perspective = Matrix4x4.CreatePerspectiveFieldOfView(fieldOfView * 0.0174532925f, aspectRatio, nearPlaneDistance, farPlaneDistance);
@@ -79,6 +83,8 @@ namespace Engine.WinForms
             Matrix4x4 RotateY = Matrix4x4.CreateRotationY(objectRotation.Y * 0.0174532925f);
             Matrix4x4 RotateZ = Matrix4x4.CreateRotationZ(objectRotation.Z * 0.0174532925f);
             Matrix4x4 Rotate = RotateZ * RotateY * RotateX;
+            float minZLevel = float.MaxValue;
+            float maxZLevel = float.MinValue;
             for (int i = 0; i < vertices.Count; i++)
             {
                 Vector4 vr = MultiplyVector(Rotate, new Vector4(vertices[i], 1));
@@ -92,7 +98,23 @@ namespace Engine.WinForms
                     Y = (int)(v.Y * raster.Height + raster.Height / 2)
                 };
                 pointsZLevel[i] = v.Z * (farPlaneDistance - nearPlaneDistance);
+                backfacePointsZLevel[i] = pointsZLevel[i];
+                if (pointsZLevel[i] > maxZLevel)
+                    maxZLevel = pointsZLevel[i];
+                if (pointsZLevel[i] < minZLevel)
+                    minZLevel = pointsZLevel[i];
                 points[i] = p;
+            }
+            int zChange = (int)(farPlaneDistance - nearPlaneDistance);
+            for (int i = 0; i < pointsZLevel.Length; i++)
+            {
+                pointsZLevel[i] = pointsZLevel[i] - minZLevel;
+                if (pointsZLevel[i] == 0)
+                {
+                    pointsZLevel[i] = nearPlaneDistance;
+                    continue;
+                }
+                pointsZLevel[i] = nearPlaneDistance + (pointsZLevel[i] / (maxZLevel - minZLevel)) * zChange;
             }
         }
 
@@ -115,33 +137,29 @@ namespace Engine.WinForms
                 g.Clear(Color.White);
             if (drawFacesCheckBox.Checked)
             {
-                foreach (Face f in faces) //draw faces
+                if (transparentFacesCheckBox.Checked)
                 {
-                    Point[] facePoints = new Point[f.Count];
-                    for (int i = 0; i < f.Count; i++)
+                    for (int i = 0; i < faces.Count; i++)
                     {
-                        facePoints[i] = points[f.VerticesInd[i]];
+                        if (!transparentFaces[i])
+                        {
+                            drawFace(ref b, i);
+                        }
                     }
-                    float[] facePointsZ = new float[f.Count];
-                    for (int i = 0; i < f.Count; i++)
+                    for (int i = 0; i < faces.Count; i++)
                     {
-                        facePointsZ[i] = pointsZLevel[f.VerticesInd[i]];
+                        if (transparentFaces[i])
+                        {
+                            drawFace(ref b, i, 0.5f);
+                        }
                     }
-                    if (backfaceCullingCheckBox.Checked)
+                }
+                else
+                {
+                    for (int i = 0; i < faces.Count; i++)
                     {
-                        Vector3 v12 = new Vector3(facePoints[1].X - facePoints[0].X, facePoints[1].Y - facePoints[0].Y, facePointsZ[1] - facePointsZ[0]);
-                        Vector3 v13 = new Vector3(facePoints[f.Count - 1].X - facePoints[0].X, facePoints[f.Count - 1].Y - facePoints[0].Y, facePointsZ[f.Count - 1] - facePointsZ[0]);
-                        Vector3 N = Vector3.Cross(v12, v13);
-                        Vector3 S = new Vector3(cameraPosition.X - facePoints[0].X, cameraPosition.Y - facePoints[0].Y, cameraPosition.Z - facePointsZ[0]);
-
-                        float dotProduct = N.X * S.X + N.Y * S.Y + N.Z * S.Z;
-                        if (dotProduct < 0)
-                            continue;
+                        drawFace(ref b, i);
                     }
-                    if (textureFaces.Checked)
-                        f.Draw(ref b, facePoints, ref zLevel, facePointsZ, zBufforCheckBox.Checked, texture);
-                    else
-                        f.Draw(ref b, facePoints, ref zLevel, facePointsZ, zBufforCheckBox.Checked);
                 }
 
                 if (drawFogCheckBox.Checked)
@@ -156,9 +174,9 @@ namespace Engine.WinForms
                             }
                             float f = (farPlaneDistance - Math.Abs(zLevel[i, j])) / (farPlaneDistance - nearPlaneDistance);
                             Color oldColor = b.GetPixel(i, j);
-                            int nRed = (int)(f * fogColor.R + (1 - f) * oldColor.R);
-                            int nGreen = (int)(f * fogColor.G + (1 - f) * oldColor.G);
-                            int nBlue = (int)(f * fogColor.B + (1 - f) * oldColor.B);
+                            int nRed = (int)((1 - f) * fogColor.R + f * oldColor.R);
+                            int nGreen = (int)((1 - f) * fogColor.G + f * oldColor.G);
+                            int nBlue = (int)((1 - f) * fogColor.B + f * oldColor.B);
                             Color nColor = Color.FromArgb(nRed, nGreen, nBlue);
                             b.SetPixel(i, j, nColor);
                         }
@@ -182,6 +200,38 @@ namespace Engine.WinForms
             }
             raster.Image = b;
             raster.Refresh();
+        }
+
+        private void drawFace(ref Bitmap b, int ind, float alpha = 1.0f)
+        {
+            Face f = faces[ind];
+            Point[] facePoints = new Point[f.Count];
+            for (int i = 0; i < f.Count; i++)
+            {
+                facePoints[i] = points[f.VerticesInd[i]];
+            }
+            float[] facePointsZ = new float[f.Count];
+            float[] backfaceFacePointsZ = new float[f.Count];
+            for (int i = 0; i < f.Count; i++)
+            {
+                facePointsZ[i] = pointsZLevel[f.VerticesInd[i]];
+                backfaceFacePointsZ[i] = backfacePointsZLevel[f.VerticesInd[i]];
+            }
+            if (backfaceCullingCheckBox.Checked)
+            {
+                Vector3 v12 = new Vector3(facePoints[1].X - facePoints[0].X, facePoints[1].Y - facePoints[0].Y, backfaceFacePointsZ[1] - backfaceFacePointsZ[0]);
+                Vector3 v13 = new Vector3(facePoints[f.Count - 1].X - facePoints[0].X, facePoints[f.Count - 1].Y - facePoints[0].Y, backfaceFacePointsZ[f.Count - 1] - backfaceFacePointsZ[0]);
+                Vector3 N = Vector3.Cross(v12, v13);
+                Vector3 S = new Vector3(cameraPosition.X - facePoints[0].X, cameraPosition.Y - facePoints[0].Y, cameraPosition.Z - backfaceFacePointsZ[0]);
+
+                float dotProduct = N.X * S.X + N.Y * S.Y + N.Z * S.Z;
+                if (dotProduct < 0)
+                    return;
+            }
+            if (textureFaces.Checked)
+                f.Draw(ref b, facePoints, ref zLevel, facePointsZ, zBufforCheckBox.Checked, alpha, texture);
+            else
+                f.Draw(ref b, facePoints, ref zLevel, facePointsZ, zBufforCheckBox.Checked, alpha);
         }
 
         private void loadButton_Click(object sender, EventArgs e)
@@ -227,14 +277,23 @@ namespace Engine.WinForms
             sr.Close();
             loadLabel.Text = $"Loaded {fileName}\n{vertices.Count} vertices\n{faces.Count} faces\n{verticesIndLines.Count} lines";
 
-            cameraPosition = new Vector3(10, 0.5f, 0.5f);
-            cameraTarget = new Vector3(0, 0.5f, 0.5f);
+            transparentFacesNumber.Value = 0;
+            transparentFacesNumber.Maximum = faces.Count;
+            transparentFaces = new bool[faces.Count];
+
+            cameraPosition = new Vector3(10, 0, 0);
+            cameraTarget = new Vector3(0, 0, 0);
             objectRotation = new Vector3(0, 0, 0);
-            upVector = new Vector3(0, 0, 1);
+            upVector = new Vector3(0, 1, 0);
 
             drawFacesCheckBox.Checked = false;
             drawEdgesCheckBox.Checked = false;
             drawPointsCheckBox.Checked = true;
+            zBufforCheckBox.Checked = false;
+            backfaceCullingCheckBox.Checked = false;
+            solidFaces.Checked = true;
+            drawFogCheckBox.Checked = false;
+            transparentFacesCheckBox.Checked = false;
             refreshScreen();
         }
 
@@ -269,16 +328,16 @@ namespace Engine.WinForms
             switch(e.KeyCode)
             {
                 case Keys.W when e.Modifiers == Keys.None:
-                    cameraTarget.Z -= 0.05f;
+                    cameraTarget.Y += 0.05f;
                     break;
                 case Keys.S when e.Modifiers == Keys.None:
-                    cameraTarget.Z += 0.05f;
-                    break;
-                case Keys.A when e.Modifiers == Keys.None:
                     cameraTarget.Y -= 0.05f;
                     break;
+                case Keys.A when e.Modifiers == Keys.None:
+                    cameraTarget.Z += 0.05f;
+                    break;
                 case Keys.D when e.Modifiers == Keys.None:
-                    cameraTarget.Y += 0.05f;
+                    cameraTarget.Z -= 0.05f;
                     break;
                 case Keys.E when e.Modifiers == Keys.None:
                     cameraPosition.X += 0.1f;
@@ -286,27 +345,21 @@ namespace Engine.WinForms
                 case Keys.Q when e.Modifiers == Keys.None:
                     cameraPosition.X -= 0.1f;
                     break;
-                case Keys.Z:
                 case Keys.D when e.Modifiers == Keys.Shift:
                     objectRotation.Z += 1f;
                     break;
-                case Keys.X:
                 case Keys.A when e.Modifiers == Keys.Shift:
                     objectRotation.Z -= 1f;
                     break;
-                case Keys.C:
                 case Keys.S when e.Modifiers == Keys.Shift:
                     objectRotation.Y += 1f;
                     break;
-                case Keys.V:
                 case Keys.W when e.Modifiers == Keys.Shift:
                     objectRotation.Y -= 1f;
                     break;
-                case Keys.B:
                 case Keys.E when e.Modifiers == Keys.Shift:
                     objectRotation.X += 1f;
                     break;
-                case Keys.N:
                 case Keys.Q when e.Modifiers == Keys.Shift:
                     objectRotation.X -= 1f;
                     break;
@@ -343,6 +396,24 @@ namespace Engine.WinForms
                 fogColorView.Refresh();
                 refreshScreen();
             }
+        }
+
+        private void transparentFacesNumber_ValueChanged(object sender, EventArgs e)
+        {
+            Random rand = new Random();
+            List<int> randomList = new List<int>();
+            transparentFaces = new bool[faces.Count];
+            while (randomList.Count < transparentFacesNumber.Value)
+            {
+                int r = rand.Next(0, faces.Count);
+                if (!randomList.Contains(r))
+                    randomList.Add(r);
+            }
+            for (int i = 0; i < randomList.Count; i++)
+            {
+                transparentFaces[randomList[i]] = true;
+            }
+            refreshScreen();
         }
     }
 }

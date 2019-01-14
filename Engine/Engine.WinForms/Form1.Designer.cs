@@ -38,7 +38,13 @@
             this.rotationLabel = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.fogColorView = new System.Windows.Forms.PictureBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.transparentFacesNumber = new System.Windows.Forms.NumericUpDown();
+            this.transparentFacesCheckBox = new System.Windows.Forms.CheckBox();
             this.textureView = new System.Windows.Forms.PictureBox();
+            this.drawFogCheckBox = new System.Windows.Forms.CheckBox();
             this.loadTextureButton = new System.Windows.Forms.Button();
             this.backfaceCullingCheckBox = new System.Windows.Forms.CheckBox();
             this.zBufforCheckBox = new System.Windows.Forms.CheckBox();
@@ -49,9 +55,8 @@
             this.drawEdgesCheckBox = new System.Windows.Forms.CheckBox();
             this.FPSLabel = new System.Windows.Forms.Label();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.drawFogCheckBox = new System.Windows.Forms.CheckBox();
-            this.fogColorView = new System.Windows.Forms.PictureBox();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.randomizeTransparentFacesButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.raster)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
@@ -59,8 +64,10 @@
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.textureView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fogColorView)).BeginInit();
+            this.groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.transparentFacesNumber)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.textureView)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -75,7 +82,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(800, 450);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(872, 620);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // raster
@@ -83,7 +90,7 @@
             this.raster.Dock = System.Windows.Forms.DockStyle.Fill;
             this.raster.Location = new System.Drawing.Point(3, 3);
             this.raster.Name = "raster";
-            this.raster.Size = new System.Drawing.Size(594, 444);
+            this.raster.Size = new System.Drawing.Size(666, 614);
             this.raster.TabIndex = 0;
             this.raster.TabStop = false;
             // 
@@ -94,9 +101,9 @@
             this.flowLayoutPanel1.Controls.Add(this.groupBox3);
             this.flowLayoutPanel1.Controls.Add(this.FPSLabel);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(603, 3);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(675, 3);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(194, 444);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(194, 614);
             this.flowLayoutPanel1.TabIndex = 1;
             // 
             // groupBox1
@@ -135,7 +142,7 @@
             this.groupBox2.Controls.Add(this.rotationLabel);
             this.groupBox2.Location = new System.Drawing.Point(3, 109);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(182, 63);
+            this.groupBox2.Size = new System.Drawing.Size(182, 60);
             this.groupBox2.TabIndex = 7;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Object rotation";
@@ -143,7 +150,7 @@
             // rotationLabel
             // 
             this.rotationLabel.AutoSize = true;
-            this.rotationLabel.Location = new System.Drawing.Point(7, 20);
+            this.rotationLabel.Location = new System.Drawing.Point(3, 16);
             this.rotationLabel.Name = "rotationLabel";
             this.rotationLabel.Size = new System.Drawing.Size(47, 13);
             this.rotationLabel.TabIndex = 0;
@@ -151,21 +158,23 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.fogColorView);
-            this.groupBox3.Controls.Add(this.drawFogCheckBox);
             this.groupBox3.Controls.Add(this.groupBox4);
             this.groupBox3.Controls.Add(this.drawPointsCheckBox);
             this.groupBox3.Controls.Add(this.drawEdgesCheckBox);
-            this.groupBox3.Location = new System.Drawing.Point(3, 178);
+            this.groupBox3.Location = new System.Drawing.Point(3, 175);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(182, 210);
+            this.groupBox3.Size = new System.Drawing.Size(182, 413);
             this.groupBox3.TabIndex = 8;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "What to draw";
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.fogColorView);
+            this.groupBox4.Controls.Add(this.groupBox6);
+            this.groupBox4.Controls.Add(this.groupBox5);
             this.groupBox4.Controls.Add(this.textureView);
+            this.groupBox4.Controls.Add(this.drawFogCheckBox);
             this.groupBox4.Controls.Add(this.loadTextureButton);
             this.groupBox4.Controls.Add(this.backfaceCullingCheckBox);
             this.groupBox4.Controls.Add(this.zBufforCheckBox);
@@ -174,23 +183,83 @@
             this.groupBox4.Controls.Add(this.drawFacesCheckBox);
             this.groupBox4.Location = new System.Drawing.Point(3, 42);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(173, 129);
+            this.groupBox4.Size = new System.Drawing.Size(173, 365);
             this.groupBox4.TabIndex = 6;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Drawing Faces";
             // 
+            // fogColorView
+            // 
+            this.fogColorView.Location = new System.Drawing.Point(111, 114);
+            this.fogColorView.Name = "fogColorView";
+            this.fogColorView.Size = new System.Drawing.Size(27, 24);
+            this.fogColorView.TabIndex = 8;
+            this.fogColorView.TabStop = false;
+            this.fogColorView.Click += new System.EventHandler(this.fogColorView_Click);
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Location = new System.Drawing.Point(3, 222);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(164, 137);
+            this.groupBox6.TabIndex = 14;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Phong Lighting";
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.randomizeTransparentFacesButton);
+            this.groupBox5.Controls.Add(this.transparentFacesNumber);
+            this.groupBox5.Controls.Add(this.transparentFacesCheckBox);
+            this.groupBox5.Location = new System.Drawing.Point(3, 145);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(164, 70);
+            this.groupBox5.TabIndex = 13;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Semitransparent Faces";
+            // 
+            // transparentFacesNumber
+            // 
+            this.transparentFacesNumber.Location = new System.Drawing.Point(4, 44);
+            this.transparentFacesNumber.Name = "transparentFacesNumber";
+            this.transparentFacesNumber.Size = new System.Drawing.Size(79, 20);
+            this.transparentFacesNumber.TabIndex = 1;
+            this.transparentFacesNumber.ValueChanged += new System.EventHandler(this.transparentFacesNumber_ValueChanged);
+            // 
+            // transparentFacesCheckBox
+            // 
+            this.transparentFacesCheckBox.AutoSize = true;
+            this.transparentFacesCheckBox.Location = new System.Drawing.Point(4, 20);
+            this.transparentFacesCheckBox.Name = "transparentFacesCheckBox";
+            this.transparentFacesCheckBox.Size = new System.Drawing.Size(162, 17);
+            this.transparentFacesCheckBox.TabIndex = 0;
+            this.transparentFacesCheckBox.Text = "Draw Semitransparent Faces";
+            this.transparentFacesCheckBox.UseVisualStyleBackColor = true;
+            this.transparentFacesCheckBox.CheckedChanged += new System.EventHandler(this.refreshScreenEvent);
+            // 
             // textureView
             // 
-            this.textureView.Location = new System.Drawing.Point(145, 100);
+            this.textureView.Location = new System.Drawing.Point(145, 85);
             this.textureView.Name = "textureView";
             this.textureView.Size = new System.Drawing.Size(22, 23);
             this.textureView.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.textureView.TabIndex = 12;
             this.textureView.TabStop = false;
             // 
+            // drawFogCheckBox
+            // 
+            this.drawFogCheckBox.AutoSize = true;
+            this.drawFogCheckBox.Location = new System.Drawing.Point(3, 121);
+            this.drawFogCheckBox.Name = "drawFogCheckBox";
+            this.drawFogCheckBox.Size = new System.Drawing.Size(104, 17);
+            this.drawFogCheckBox.TabIndex = 7;
+            this.drawFogCheckBox.Text = "Draw Linear Fog";
+            this.drawFogCheckBox.UseVisualStyleBackColor = true;
+            this.drawFogCheckBox.CheckedChanged += new System.EventHandler(this.refreshScreenEvent);
+            // 
             // loadTextureButton
             // 
-            this.loadTextureButton.Location = new System.Drawing.Point(60, 100);
+            this.loadTextureButton.Location = new System.Drawing.Point(60, 85);
             this.loadTextureButton.Name = "loadTextureButton";
             this.loadTextureButton.Size = new System.Drawing.Size(78, 23);
             this.loadTextureButton.TabIndex = 11;
@@ -223,7 +292,7 @@
             // textureFaces
             // 
             this.textureFaces.AutoSize = true;
-            this.textureFaces.Location = new System.Drawing.Point(3, 103);
+            this.textureFaces.Location = new System.Drawing.Point(3, 88);
             this.textureFaces.Name = "textureFaces";
             this.textureFaces.Size = new System.Drawing.Size(61, 17);
             this.textureFaces.TabIndex = 8;
@@ -234,7 +303,7 @@
             // 
             this.solidFaces.AutoSize = true;
             this.solidFaces.Checked = true;
-            this.solidFaces.Location = new System.Drawing.Point(3, 80);
+            this.solidFaces.Location = new System.Drawing.Point(3, 65);
             this.solidFaces.Name = "solidFaces";
             this.solidFaces.Size = new System.Drawing.Size(74, 17);
             this.solidFaces.TabIndex = 7;
@@ -281,7 +350,7 @@
             // FPSLabel
             // 
             this.FPSLabel.AutoSize = true;
-            this.FPSLabel.Location = new System.Drawing.Point(3, 391);
+            this.FPSLabel.Location = new System.Drawing.Point(3, 591);
             this.FPSLabel.Name = "FPSLabel";
             this.FPSLabel.Size = new System.Drawing.Size(53, 13);
             this.FPSLabel.TabIndex = 3;
@@ -291,31 +360,21 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // drawFogCheckBox
+            // randomizeTransparentFacesButton
             // 
-            this.drawFogCheckBox.AutoSize = true;
-            this.drawFogCheckBox.Location = new System.Drawing.Point(3, 178);
-            this.drawFogCheckBox.Name = "drawFogCheckBox";
-            this.drawFogCheckBox.Size = new System.Drawing.Size(104, 17);
-            this.drawFogCheckBox.TabIndex = 7;
-            this.drawFogCheckBox.Text = "Draw Linear Fog";
-            this.drawFogCheckBox.UseVisualStyleBackColor = true;
-            this.drawFogCheckBox.CheckedChanged += new System.EventHandler(this.refreshScreenEvent);
-            // 
-            // fogColorView
-            // 
-            this.fogColorView.Location = new System.Drawing.Point(114, 171);
-            this.fogColorView.Name = "fogColorView";
-            this.fogColorView.Size = new System.Drawing.Size(27, 24);
-            this.fogColorView.TabIndex = 8;
-            this.fogColorView.TabStop = false;
-            this.fogColorView.Click += new System.EventHandler(this.fogColorView_Click);
+            this.randomizeTransparentFacesButton.Location = new System.Drawing.Point(86, 41);
+            this.randomizeTransparentFacesButton.Name = "randomizeTransparentFacesButton";
+            this.randomizeTransparentFacesButton.Size = new System.Drawing.Size(75, 23);
+            this.randomizeTransparentFacesButton.TabIndex = 2;
+            this.randomizeTransparentFacesButton.Text = "Randomize";
+            this.randomizeTransparentFacesButton.UseVisualStyleBackColor = true;
+            this.randomizeTransparentFacesButton.Click += new System.EventHandler(this.transparentFacesNumber_ValueChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(872, 620);
             this.Controls.Add(this.tableLayoutPanel1);
             this.KeyPreview = true;
             this.MinimumSize = new System.Drawing.Size(400, 400);
@@ -335,8 +394,11 @@
             this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.textureView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fogColorView)).EndInit();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.transparentFacesNumber)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.textureView)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -367,6 +429,11 @@
         private System.Windows.Forms.PictureBox fogColorView;
         private System.Windows.Forms.CheckBox drawFogCheckBox;
         private System.Windows.Forms.ColorDialog colorDialog1;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.NumericUpDown transparentFacesNumber;
+        private System.Windows.Forms.CheckBox transparentFacesCheckBox;
+        private System.Windows.Forms.Button randomizeTransparentFacesButton;
     }
 }
 
