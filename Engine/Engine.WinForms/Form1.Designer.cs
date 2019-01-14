@@ -38,6 +38,9 @@
             this.rotationLabel = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.textureView = new System.Windows.Forms.PictureBox();
+            this.loadTextureButton = new System.Windows.Forms.Button();
+            this.backfaceCullingCheckBox = new System.Windows.Forms.CheckBox();
             this.zBufforCheckBox = new System.Windows.Forms.CheckBox();
             this.textureFaces = new System.Windows.Forms.RadioButton();
             this.solidFaces = new System.Windows.Forms.RadioButton();
@@ -46,9 +49,9 @@
             this.drawEdgesCheckBox = new System.Windows.Forms.CheckBox();
             this.FPSLabel = new System.Windows.Forms.Label();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.backfaceCullingCheckBox = new System.Windows.Forms.CheckBox();
-            this.loadTextureButton = new System.Windows.Forms.Button();
-            this.textureView = new System.Windows.Forms.PictureBox();
+            this.drawFogCheckBox = new System.Windows.Forms.CheckBox();
+            this.fogColorView = new System.Windows.Forms.PictureBox();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.raster)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
@@ -57,6 +60,7 @@
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.textureView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fogColorView)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -147,6 +151,8 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.fogColorView);
+            this.groupBox3.Controls.Add(this.drawFogCheckBox);
             this.groupBox3.Controls.Add(this.groupBox4);
             this.groupBox3.Controls.Add(this.drawPointsCheckBox);
             this.groupBox3.Controls.Add(this.drawEdgesCheckBox);
@@ -172,6 +178,36 @@
             this.groupBox4.TabIndex = 6;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Drawing Faces";
+            // 
+            // textureView
+            // 
+            this.textureView.Location = new System.Drawing.Point(145, 100);
+            this.textureView.Name = "textureView";
+            this.textureView.Size = new System.Drawing.Size(22, 23);
+            this.textureView.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.textureView.TabIndex = 12;
+            this.textureView.TabStop = false;
+            // 
+            // loadTextureButton
+            // 
+            this.loadTextureButton.Location = new System.Drawing.Point(60, 100);
+            this.loadTextureButton.Name = "loadTextureButton";
+            this.loadTextureButton.Size = new System.Drawing.Size(78, 23);
+            this.loadTextureButton.TabIndex = 11;
+            this.loadTextureButton.Text = "Load Texture";
+            this.loadTextureButton.UseVisualStyleBackColor = true;
+            this.loadTextureButton.Click += new System.EventHandler(this.loadTextureButton_Click);
+            // 
+            // backfaceCullingCheckBox
+            // 
+            this.backfaceCullingCheckBox.AutoSize = true;
+            this.backfaceCullingCheckBox.Location = new System.Drawing.Point(3, 42);
+            this.backfaceCullingCheckBox.Name = "backfaceCullingCheckBox";
+            this.backfaceCullingCheckBox.Size = new System.Drawing.Size(105, 17);
+            this.backfaceCullingCheckBox.TabIndex = 10;
+            this.backfaceCullingCheckBox.Text = "Backface culling";
+            this.backfaceCullingCheckBox.UseVisualStyleBackColor = true;
+            this.backfaceCullingCheckBox.CheckedChanged += new System.EventHandler(this.refreshScreenEvent);
             // 
             // zBufforCheckBox
             // 
@@ -255,35 +291,25 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // backfaceCullingCheckBox
+            // drawFogCheckBox
             // 
-            this.backfaceCullingCheckBox.AutoSize = true;
-            this.backfaceCullingCheckBox.Location = new System.Drawing.Point(3, 42);
-            this.backfaceCullingCheckBox.Name = "backfaceCullingCheckBox";
-            this.backfaceCullingCheckBox.Size = new System.Drawing.Size(105, 17);
-            this.backfaceCullingCheckBox.TabIndex = 10;
-            this.backfaceCullingCheckBox.Text = "Backface culling";
-            this.backfaceCullingCheckBox.UseVisualStyleBackColor = true;
-            this.backfaceCullingCheckBox.CheckedChanged += new System.EventHandler(this.refreshScreenEvent);
+            this.drawFogCheckBox.AutoSize = true;
+            this.drawFogCheckBox.Location = new System.Drawing.Point(3, 178);
+            this.drawFogCheckBox.Name = "drawFogCheckBox";
+            this.drawFogCheckBox.Size = new System.Drawing.Size(104, 17);
+            this.drawFogCheckBox.TabIndex = 7;
+            this.drawFogCheckBox.Text = "Draw Linear Fog";
+            this.drawFogCheckBox.UseVisualStyleBackColor = true;
+            this.drawFogCheckBox.CheckedChanged += new System.EventHandler(this.refreshScreenEvent);
             // 
-            // loadTextureButton
+            // fogColorView
             // 
-            this.loadTextureButton.Location = new System.Drawing.Point(60, 100);
-            this.loadTextureButton.Name = "loadTextureButton";
-            this.loadTextureButton.Size = new System.Drawing.Size(78, 23);
-            this.loadTextureButton.TabIndex = 11;
-            this.loadTextureButton.Text = "Load Texture";
-            this.loadTextureButton.UseVisualStyleBackColor = true;
-            this.loadTextureButton.Click += new System.EventHandler(this.loadTextureButton_Click);
-            // 
-            // textureView
-            // 
-            this.textureView.Location = new System.Drawing.Point(145, 100);
-            this.textureView.Name = "textureView";
-            this.textureView.Size = new System.Drawing.Size(22, 23);
-            this.textureView.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.textureView.TabIndex = 12;
-            this.textureView.TabStop = false;
+            this.fogColorView.Location = new System.Drawing.Point(114, 171);
+            this.fogColorView.Name = "fogColorView";
+            this.fogColorView.Size = new System.Drawing.Size(27, 24);
+            this.fogColorView.TabIndex = 8;
+            this.fogColorView.TabStop = false;
+            this.fogColorView.Click += new System.EventHandler(this.fogColorView_Click);
             // 
             // Form1
             // 
@@ -310,6 +336,7 @@
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.textureView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fogColorView)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -337,6 +364,9 @@
         private System.Windows.Forms.PictureBox textureView;
         private System.Windows.Forms.Button loadTextureButton;
         private System.Windows.Forms.CheckBox backfaceCullingCheckBox;
+        private System.Windows.Forms.PictureBox fogColorView;
+        private System.Windows.Forms.CheckBox drawFogCheckBox;
+        private System.Windows.Forms.ColorDialog colorDialog1;
     }
 }
 

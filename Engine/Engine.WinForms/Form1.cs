@@ -40,6 +40,8 @@ namespace Engine.WinForms
 
         private Bitmap texture;
 
+        private Color fogColor = Color.Gray;
+
         public Form1()
         {
             InitializeComponent();
@@ -48,6 +50,10 @@ namespace Engine.WinForms
             Graphics g = Graphics.FromImage(texture);
             g.Clear(Color.Black);
             textureView.Image = texture;
+            Bitmap fogColorBitmap = new Bitmap(50, 50);
+            g = Graphics.FromImage(fogColorBitmap);
+            g.Clear(fogColor);
+            fogColorView.Image = fogColorBitmap;
 
             this.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.raster_MouseWheel);
 
@@ -85,7 +91,7 @@ namespace Engine.WinForms
                     X = (int)(v.X * raster.Width + raster.Width / 2),
                     Y = (int)(v.Y * raster.Height + raster.Height / 2)
                 };
-                pointsZLevel[i] = v.Z;
+                pointsZLevel[i] = v.Z * (farPlaneDistance - nearPlaneDistance);
                 points[i] = p;
             }
         }
@@ -103,7 +109,10 @@ namespace Engine.WinForms
         {
             Bitmap b = new Bitmap(raster.Width, raster.Height);
             Graphics g = Graphics.FromImage(b);
-            g.Clear(Color.White);
+            if (drawFacesCheckBox.Checked && drawFogCheckBox.Checked)
+                g.Clear(fogColor);
+            else
+                g.Clear(Color.White);
             if (drawFacesCheckBox.Checked)
             {
                 foreach (Face f in faces) //draw faces
@@ -134,8 +143,29 @@ namespace Engine.WinForms
                     else
                         f.Draw(ref b, facePoints, ref zLevel, facePointsZ, zBufforCheckBox.Checked);
                 }
+
+                if (drawFogCheckBox.Checked)
+                {
+                    for (int i = 0; i < b.Width; i++)
+                    {
+                        for (int j = 0; j < b.Height; j++)
+                        {
+                            if (zLevel[i, j] > farPlaneDistance || zLevel[i, j] < nearPlaneDistance)
+                            {
+                                continue;
+                            }
+                            float f = (farPlaneDistance - Math.Abs(zLevel[i, j])) / (farPlaneDistance - nearPlaneDistance);
+                            Color oldColor = b.GetPixel(i, j);
+                            int nRed = (int)(f * fogColor.R + (1 - f) * oldColor.R);
+                            int nGreen = (int)(f * fogColor.G + (1 - f) * oldColor.G);
+                            int nBlue = (int)(f * fogColor.B + (1 - f) * oldColor.B);
+                            Color nColor = Color.FromArgb(nRed, nGreen, nBlue);
+                            b.SetPixel(i, j, nColor);
+                        }
+                    }
+                }
             }
-            if (drawPointsCheckBox.Checked)
+            if (drawPointsCheckBox.Checked && !drawEdgesCheckBox.Checked)
             {
                 foreach (PointF p in points) //draw points
                 {
@@ -299,6 +329,18 @@ namespace Engine.WinForms
                 texture = new Bitmap(openFileDialog1.OpenFile());
                 textureView.Image = texture;
                 textureView.Refresh();
+                refreshScreen();
+            }
+        }
+
+        private void fogColorView_Click(object sender, EventArgs e)
+        {
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                fogColor = colorDialog1.Color;
+                Graphics g = Graphics.FromImage(fogColorView.Image);
+                g.Clear(fogColor);
+                fogColorView.Refresh();
                 refreshScreen();
             }
         }
