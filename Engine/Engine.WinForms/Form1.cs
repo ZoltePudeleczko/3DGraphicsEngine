@@ -28,6 +28,8 @@ namespace Engine.WinForms
 
         private Vector3 objectRotation;
 
+        private Vector3[] facesNormal;
+
         private float nearPlaneDistance = 1;
         private float farPlaneDistance = 100;
         private float fieldOfView = 45;
@@ -36,6 +38,7 @@ namespace Engine.WinForms
         private float[,] zLevel;
         private float[] pointsZLevel;
         private float[] backfacePointsZLevel;
+        private int[,] pointsToFacesInd;
 
         private int fps;
 
@@ -116,6 +119,14 @@ namespace Engine.WinForms
                 }
                 pointsZLevel[i] = nearPlaneDistance + (pointsZLevel[i] / (maxZLevel - minZLevel)) * zChange;
             }
+            facesNormal = new Vector3[faces.Count];
+            for (int i = 0; i < faces.Count; i++)
+            {
+                Vector3 v12 = new Vector3(points[faces[i].VerticesInd[1]].X - points[faces[i].VerticesInd[0]].X, points[faces[i].VerticesInd[1]].Y - points[faces[i].VerticesInd[0]].Y, backfacePointsZLevel[faces[i].VerticesInd[1]] - backfacePointsZLevel[faces[i].VerticesInd[0]]);
+                Vector3 v13 = new Vector3(points[faces[i].VerticesInd[faces[i].Count - 1]].X - points[faces[i].VerticesInd[0]].X, points[faces[i].VerticesInd[faces[i].Count - 1]].Y - points[faces[i].VerticesInd[0]].Y, backfacePointsZLevel[faces[i].VerticesInd[faces[i].Count - 1]] - backfacePointsZLevel[faces[i].VerticesInd[0]]);
+                facesNormal[i] = Vector3.Cross(v12, v13);
+            }
+
         }
 
         private Vector4 MultiplyVector(Matrix4x4 m, Vector4 v)
@@ -137,6 +148,15 @@ namespace Engine.WinForms
                 g.Clear(Color.White);
             if (drawFacesCheckBox.Checked)
             {
+                pointsToFacesInd = new int[raster.Width, raster.Height];
+                for (int i = 0; i < raster.Width; i++)
+                {
+                    for (int j = 0; j < raster.Height; j++)
+                    {
+                        pointsToFacesInd[i, j] = -1;
+                    }
+                }
+
                 if (transparentFacesCheckBox.Checked)
                 {
                     for (int i = 0; i < faces.Count; i++)
@@ -161,7 +181,19 @@ namespace Engine.WinForms
                         drawFace(ref b, i);
                     }
                 }
-
+                if (drawPhongLightingCheckBox.Checked)
+                {
+                    for (int i = 0; i < b.Width; i++)
+                    {
+                        for (int j = 0; j < b.Height; j++)
+                        {
+                            if (pointsToFacesInd[i, j] == -1)
+                            {
+                                continue;
+                            }
+                        }
+                    }
+                }
                 if (drawFogCheckBox.Checked)
                 {
                     for (int i = 0; i < b.Width; i++)
@@ -217,21 +249,19 @@ namespace Engine.WinForms
                 facePointsZ[i] = pointsZLevel[f.VerticesInd[i]];
                 backfaceFacePointsZ[i] = backfacePointsZLevel[f.VerticesInd[i]];
             }
-            if (backfaceCullingCheckBox.Checked)
+            if (!disabledBackfaceCulling.Checked)
             {
-                Vector3 v12 = new Vector3(facePoints[1].X - facePoints[0].X, facePoints[1].Y - facePoints[0].Y, backfaceFacePointsZ[1] - backfaceFacePointsZ[0]);
-                Vector3 v13 = new Vector3(facePoints[f.Count - 1].X - facePoints[0].X, facePoints[f.Count - 1].Y - facePoints[0].Y, backfaceFacePointsZ[f.Count - 1] - backfaceFacePointsZ[0]);
-                Vector3 N = Vector3.Cross(v12, v13);
+                Vector3 N = facesNormal[ind];
                 Vector3 S = new Vector3(cameraPosition.X - facePoints[0].X, cameraPosition.Y - facePoints[0].Y, cameraPosition.Z - backfaceFacePointsZ[0]);
 
                 float dotProduct = N.X * S.X + N.Y * S.Y + N.Z * S.Z;
-                if (dotProduct < 0)
+                if ((backfaceCulling.Checked && dotProduct < 0) || (reverseBackfaceCulling.Checked && dotProduct > 0))
                     return;
             }
             if (textureFaces.Checked)
-                f.Draw(ref b, facePoints, ref zLevel, facePointsZ, zBufforCheckBox.Checked, alpha, texture);
+                f.Draw(ref b, facePoints, ref zLevel, facePointsZ, zBufforCheckBox.Checked, ind, ref pointsToFacesInd, alpha, texture);
             else
-                f.Draw(ref b, facePoints, ref zLevel, facePointsZ, zBufforCheckBox.Checked, alpha);
+                f.Draw(ref b, facePoints, ref zLevel, facePointsZ, zBufforCheckBox.Checked, ind, ref pointsToFacesInd, alpha);
         }
 
         private void loadButton_Click(object sender, EventArgs e)
@@ -290,7 +320,7 @@ namespace Engine.WinForms
             drawEdgesCheckBox.Checked = false;
             drawPointsCheckBox.Checked = true;
             zBufforCheckBox.Checked = false;
-            backfaceCullingCheckBox.Checked = false;
+            disabledBackfaceCulling.Checked = true;
             solidFaces.Checked = true;
             drawFogCheckBox.Checked = false;
             transparentFacesCheckBox.Checked = false;

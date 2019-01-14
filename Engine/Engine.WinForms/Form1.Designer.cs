@@ -46,7 +46,6 @@
             this.textureView = new System.Windows.Forms.PictureBox();
             this.drawFogCheckBox = new System.Windows.Forms.CheckBox();
             this.loadTextureButton = new System.Windows.Forms.Button();
-            this.backfaceCullingCheckBox = new System.Windows.Forms.CheckBox();
             this.zBufforCheckBox = new System.Windows.Forms.CheckBox();
             this.textureFaces = new System.Windows.Forms.RadioButton();
             this.solidFaces = new System.Windows.Forms.RadioButton();
@@ -57,6 +56,34 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.randomizeTransparentFacesButton = new System.Windows.Forms.Button();
+            this.drawPhongLightingCheckBox = new System.Windows.Forms.CheckBox();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lightingX = new System.Windows.Forms.NumericUpDown();
+            this.lightingZ = new System.Windows.Forms.NumericUpDown();
+            this.lightingY = new System.Windows.Forms.NumericUpDown();
+            this.lightingAmbientG = new System.Windows.Forms.NumericUpDown();
+            this.lightingAmbientB = new System.Windows.Forms.NumericUpDown();
+            this.lightingAmbientR = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
+            this.lightingDiffuseG = new System.Windows.Forms.NumericUpDown();
+            this.lightingDiffuseB = new System.Windows.Forms.NumericUpDown();
+            this.lightingDiffuseR = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
+            this.lightingSpecularG = new System.Windows.Forms.NumericUpDown();
+            this.lightingSpecularB = new System.Windows.Forms.NumericUpDown();
+            this.lightingSpecularR = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
+            this.lightingShinning = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
+            this.lightingIntensityG = new System.Windows.Forms.NumericUpDown();
+            this.lightingIntensityB = new System.Windows.Forms.NumericUpDown();
+            this.lightingIntensityR = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.backfaceCulling = new System.Windows.Forms.RadioButton();
+            this.reverseBackfaceCulling = new System.Windows.Forms.RadioButton();
+            this.disabledBackfaceCulling = new System.Windows.Forms.RadioButton();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.raster)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
@@ -65,24 +92,45 @@
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fogColorView)).BeginInit();
+            this.groupBox6.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.transparentFacesNumber)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.textureView)).BeginInit();
+            this.flowLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingX)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingZ)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingAmbientG)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingAmbientB)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingAmbientR)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingDiffuseG)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingDiffuseB)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingDiffuseR)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingSpecularG)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingSpecularB)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingSpecularR)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingShinning)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingIntensityG)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingIntensityB)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingIntensityR)).BeginInit();
+            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
             this.tableLayoutPanel1.Controls.Add(this.raster, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel2, 2, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(872, 620);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(924, 617);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // raster
@@ -90,20 +138,17 @@
             this.raster.Dock = System.Windows.Forms.DockStyle.Fill;
             this.raster.Location = new System.Drawing.Point(3, 3);
             this.raster.Name = "raster";
-            this.raster.Size = new System.Drawing.Size(666, 614);
+            this.raster.Size = new System.Drawing.Size(518, 611);
             this.raster.TabIndex = 0;
             this.raster.TabStop = false;
             // 
             // flowLayoutPanel1
             // 
-            this.flowLayoutPanel1.Controls.Add(this.groupBox1);
-            this.flowLayoutPanel1.Controls.Add(this.groupBox2);
             this.flowLayoutPanel1.Controls.Add(this.groupBox3);
-            this.flowLayoutPanel1.Controls.Add(this.FPSLabel);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(675, 3);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(527, 3);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(194, 614);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(194, 611);
             this.flowLayoutPanel1.TabIndex = 1;
             // 
             // groupBox1
@@ -161,36 +206,36 @@
             this.groupBox3.Controls.Add(this.groupBox4);
             this.groupBox3.Controls.Add(this.drawPointsCheckBox);
             this.groupBox3.Controls.Add(this.drawEdgesCheckBox);
-            this.groupBox3.Location = new System.Drawing.Point(3, 175);
+            this.groupBox3.Location = new System.Drawing.Point(3, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(182, 413);
+            this.groupBox3.Size = new System.Drawing.Size(182, 605);
             this.groupBox3.TabIndex = 8;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "What to draw";
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.groupBox7);
             this.groupBox4.Controls.Add(this.fogColorView);
             this.groupBox4.Controls.Add(this.groupBox6);
             this.groupBox4.Controls.Add(this.groupBox5);
             this.groupBox4.Controls.Add(this.textureView);
             this.groupBox4.Controls.Add(this.drawFogCheckBox);
             this.groupBox4.Controls.Add(this.loadTextureButton);
-            this.groupBox4.Controls.Add(this.backfaceCullingCheckBox);
             this.groupBox4.Controls.Add(this.zBufforCheckBox);
             this.groupBox4.Controls.Add(this.textureFaces);
             this.groupBox4.Controls.Add(this.solidFaces);
             this.groupBox4.Controls.Add(this.drawFacesCheckBox);
             this.groupBox4.Location = new System.Drawing.Point(3, 42);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(173, 365);
+            this.groupBox4.Size = new System.Drawing.Size(173, 557);
             this.groupBox4.TabIndex = 6;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Drawing Faces";
             // 
             // fogColorView
             // 
-            this.fogColorView.Location = new System.Drawing.Point(111, 114);
+            this.fogColorView.Location = new System.Drawing.Point(111, 148);
             this.fogColorView.Name = "fogColorView";
             this.fogColorView.Size = new System.Drawing.Size(27, 24);
             this.fogColorView.TabIndex = 8;
@@ -199,9 +244,32 @@
             // 
             // groupBox6
             // 
-            this.groupBox6.Location = new System.Drawing.Point(3, 222);
+            this.groupBox6.Controls.Add(this.lightingIntensityG);
+            this.groupBox6.Controls.Add(this.lightingIntensityB);
+            this.groupBox6.Controls.Add(this.lightingIntensityR);
+            this.groupBox6.Controls.Add(this.label6);
+            this.groupBox6.Controls.Add(this.lightingShinning);
+            this.groupBox6.Controls.Add(this.label5);
+            this.groupBox6.Controls.Add(this.lightingSpecularG);
+            this.groupBox6.Controls.Add(this.lightingSpecularB);
+            this.groupBox6.Controls.Add(this.lightingSpecularR);
+            this.groupBox6.Controls.Add(this.label4);
+            this.groupBox6.Controls.Add(this.lightingDiffuseG);
+            this.groupBox6.Controls.Add(this.lightingDiffuseB);
+            this.groupBox6.Controls.Add(this.lightingDiffuseR);
+            this.groupBox6.Controls.Add(this.label3);
+            this.groupBox6.Controls.Add(this.lightingAmbientG);
+            this.groupBox6.Controls.Add(this.lightingAmbientB);
+            this.groupBox6.Controls.Add(this.lightingAmbientR);
+            this.groupBox6.Controls.Add(this.label2);
+            this.groupBox6.Controls.Add(this.lightingY);
+            this.groupBox6.Controls.Add(this.lightingZ);
+            this.groupBox6.Controls.Add(this.lightingX);
+            this.groupBox6.Controls.Add(this.label1);
+            this.groupBox6.Controls.Add(this.drawPhongLightingCheckBox);
+            this.groupBox6.Location = new System.Drawing.Point(3, 256);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(164, 137);
+            this.groupBox6.Size = new System.Drawing.Size(164, 298);
             this.groupBox6.TabIndex = 14;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Phong Lighting";
@@ -211,7 +279,7 @@
             this.groupBox5.Controls.Add(this.randomizeTransparentFacesButton);
             this.groupBox5.Controls.Add(this.transparentFacesNumber);
             this.groupBox5.Controls.Add(this.transparentFacesCheckBox);
-            this.groupBox5.Location = new System.Drawing.Point(3, 145);
+            this.groupBox5.Location = new System.Drawing.Point(3, 179);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(164, 70);
             this.groupBox5.TabIndex = 13;
@@ -239,7 +307,7 @@
             // 
             // textureView
             // 
-            this.textureView.Location = new System.Drawing.Point(145, 85);
+            this.textureView.Location = new System.Drawing.Point(145, 119);
             this.textureView.Name = "textureView";
             this.textureView.Size = new System.Drawing.Size(22, 23);
             this.textureView.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -249,7 +317,7 @@
             // drawFogCheckBox
             // 
             this.drawFogCheckBox.AutoSize = true;
-            this.drawFogCheckBox.Location = new System.Drawing.Point(3, 121);
+            this.drawFogCheckBox.Location = new System.Drawing.Point(3, 155);
             this.drawFogCheckBox.Name = "drawFogCheckBox";
             this.drawFogCheckBox.Size = new System.Drawing.Size(104, 17);
             this.drawFogCheckBox.TabIndex = 7;
@@ -259,24 +327,13 @@
             // 
             // loadTextureButton
             // 
-            this.loadTextureButton.Location = new System.Drawing.Point(60, 85);
+            this.loadTextureButton.Location = new System.Drawing.Point(60, 119);
             this.loadTextureButton.Name = "loadTextureButton";
             this.loadTextureButton.Size = new System.Drawing.Size(78, 23);
             this.loadTextureButton.TabIndex = 11;
             this.loadTextureButton.Text = "Load Texture";
             this.loadTextureButton.UseVisualStyleBackColor = true;
             this.loadTextureButton.Click += new System.EventHandler(this.loadTextureButton_Click);
-            // 
-            // backfaceCullingCheckBox
-            // 
-            this.backfaceCullingCheckBox.AutoSize = true;
-            this.backfaceCullingCheckBox.Location = new System.Drawing.Point(3, 42);
-            this.backfaceCullingCheckBox.Name = "backfaceCullingCheckBox";
-            this.backfaceCullingCheckBox.Size = new System.Drawing.Size(105, 17);
-            this.backfaceCullingCheckBox.TabIndex = 10;
-            this.backfaceCullingCheckBox.Text = "Backface culling";
-            this.backfaceCullingCheckBox.UseVisualStyleBackColor = true;
-            this.backfaceCullingCheckBox.CheckedChanged += new System.EventHandler(this.refreshScreenEvent);
             // 
             // zBufforCheckBox
             // 
@@ -292,7 +349,7 @@
             // textureFaces
             // 
             this.textureFaces.AutoSize = true;
-            this.textureFaces.Location = new System.Drawing.Point(3, 88);
+            this.textureFaces.Location = new System.Drawing.Point(3, 122);
             this.textureFaces.Name = "textureFaces";
             this.textureFaces.Size = new System.Drawing.Size(61, 17);
             this.textureFaces.TabIndex = 8;
@@ -303,7 +360,7 @@
             // 
             this.solidFaces.AutoSize = true;
             this.solidFaces.Checked = true;
-            this.solidFaces.Location = new System.Drawing.Point(3, 65);
+            this.solidFaces.Location = new System.Drawing.Point(3, 99);
             this.solidFaces.Name = "solidFaces";
             this.solidFaces.Size = new System.Drawing.Size(74, 17);
             this.solidFaces.TabIndex = 7;
@@ -350,7 +407,7 @@
             // FPSLabel
             // 
             this.FPSLabel.AutoSize = true;
-            this.FPSLabel.Location = new System.Drawing.Point(3, 591);
+            this.FPSLabel.Location = new System.Drawing.Point(3, 172);
             this.FPSLabel.Name = "FPSLabel";
             this.FPSLabel.Size = new System.Drawing.Size(53, 13);
             this.FPSLabel.TabIndex = 3;
@@ -370,14 +427,247 @@
             this.randomizeTransparentFacesButton.UseVisualStyleBackColor = true;
             this.randomizeTransparentFacesButton.Click += new System.EventHandler(this.transparentFacesNumber_ValueChanged);
             // 
+            // drawPhongLightingCheckBox
+            // 
+            this.drawPhongLightingCheckBox.AutoSize = true;
+            this.drawPhongLightingCheckBox.Location = new System.Drawing.Point(4, 20);
+            this.drawPhongLightingCheckBox.Name = "drawPhongLightingCheckBox";
+            this.drawPhongLightingCheckBox.Size = new System.Drawing.Size(119, 17);
+            this.drawPhongLightingCheckBox.TabIndex = 0;
+            this.drawPhongLightingCheckBox.Text = "Use Phong Lighting";
+            this.drawPhongLightingCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.Controls.Add(this.groupBox1);
+            this.flowLayoutPanel2.Controls.Add(this.groupBox2);
+            this.flowLayoutPanel2.Controls.Add(this.FPSLabel);
+            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(727, 3);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(194, 611);
+            this.flowLayoutPanel2.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(4, 44);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(121, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Lighting source position:";
+            // 
+            // lightingX
+            // 
+            this.lightingX.Location = new System.Drawing.Point(4, 61);
+            this.lightingX.Name = "lightingX";
+            this.lightingX.Size = new System.Drawing.Size(43, 20);
+            this.lightingX.TabIndex = 2;
+            // 
+            // lightingZ
+            // 
+            this.lightingZ.Location = new System.Drawing.Point(102, 61);
+            this.lightingZ.Name = "lightingZ";
+            this.lightingZ.Size = new System.Drawing.Size(43, 20);
+            this.lightingZ.TabIndex = 3;
+            // 
+            // lightingY
+            // 
+            this.lightingY.Location = new System.Drawing.Point(53, 61);
+            this.lightingY.Name = "lightingY";
+            this.lightingY.Size = new System.Drawing.Size(43, 20);
+            this.lightingY.TabIndex = 4;
+            // 
+            // lightingAmbientG
+            // 
+            this.lightingAmbientG.Location = new System.Drawing.Point(55, 153);
+            this.lightingAmbientG.Name = "lightingAmbientG";
+            this.lightingAmbientG.Size = new System.Drawing.Size(43, 20);
+            this.lightingAmbientG.TabIndex = 8;
+            // 
+            // lightingAmbientB
+            // 
+            this.lightingAmbientB.Location = new System.Drawing.Point(104, 153);
+            this.lightingAmbientB.Name = "lightingAmbientB";
+            this.lightingAmbientB.Size = new System.Drawing.Size(43, 20);
+            this.lightingAmbientB.TabIndex = 7;
+            // 
+            // lightingAmbientR
+            // 
+            this.lightingAmbientR.Location = new System.Drawing.Point(6, 153);
+            this.lightingAmbientR.Name = "lightingAmbientR";
+            this.lightingAmbientR.Size = new System.Drawing.Size(43, 20);
+            this.lightingAmbientR.TabIndex = 6;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 136);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(48, 13);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "Ambient:";
+            // 
+            // lightingDiffuseG
+            // 
+            this.lightingDiffuseG.Location = new System.Drawing.Point(55, 193);
+            this.lightingDiffuseG.Name = "lightingDiffuseG";
+            this.lightingDiffuseG.Size = new System.Drawing.Size(43, 20);
+            this.lightingDiffuseG.TabIndex = 12;
+            // 
+            // lightingDiffuseB
+            // 
+            this.lightingDiffuseB.Location = new System.Drawing.Point(104, 193);
+            this.lightingDiffuseB.Name = "lightingDiffuseB";
+            this.lightingDiffuseB.Size = new System.Drawing.Size(43, 20);
+            this.lightingDiffuseB.TabIndex = 11;
+            // 
+            // lightingDiffuseR
+            // 
+            this.lightingDiffuseR.Location = new System.Drawing.Point(6, 193);
+            this.lightingDiffuseR.Name = "lightingDiffuseR";
+            this.lightingDiffuseR.Size = new System.Drawing.Size(43, 20);
+            this.lightingDiffuseR.TabIndex = 10;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 176);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(43, 13);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "Diffuse:";
+            // 
+            // lightingSpecularG
+            // 
+            this.lightingSpecularG.Location = new System.Drawing.Point(55, 233);
+            this.lightingSpecularG.Name = "lightingSpecularG";
+            this.lightingSpecularG.Size = new System.Drawing.Size(43, 20);
+            this.lightingSpecularG.TabIndex = 16;
+            // 
+            // lightingSpecularB
+            // 
+            this.lightingSpecularB.Location = new System.Drawing.Point(104, 233);
+            this.lightingSpecularB.Name = "lightingSpecularB";
+            this.lightingSpecularB.Size = new System.Drawing.Size(43, 20);
+            this.lightingSpecularB.TabIndex = 15;
+            // 
+            // lightingSpecularR
+            // 
+            this.lightingSpecularR.Location = new System.Drawing.Point(6, 233);
+            this.lightingSpecularR.Name = "lightingSpecularR";
+            this.lightingSpecularR.Size = new System.Drawing.Size(43, 20);
+            this.lightingSpecularR.TabIndex = 14;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 216);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(52, 13);
+            this.label4.TabIndex = 13;
+            this.label4.Text = "Specular:";
+            // 
+            // lightingShinning
+            // 
+            this.lightingShinning.Location = new System.Drawing.Point(6, 273);
+            this.lightingShinning.Name = "lightingShinning";
+            this.lightingShinning.Size = new System.Drawing.Size(43, 20);
+            this.lightingShinning.TabIndex = 18;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 256);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(95, 13);
+            this.label5.TabIndex = 17;
+            this.label5.Text = "Shinning constant:";
+            // 
+            // lightingIntensityG
+            // 
+            this.lightingIntensityG.Location = new System.Drawing.Point(55, 114);
+            this.lightingIntensityG.Name = "lightingIntensityG";
+            this.lightingIntensityG.Size = new System.Drawing.Size(43, 20);
+            this.lightingIntensityG.TabIndex = 22;
+            // 
+            // lightingIntensityB
+            // 
+            this.lightingIntensityB.Location = new System.Drawing.Point(104, 114);
+            this.lightingIntensityB.Name = "lightingIntensityB";
+            this.lightingIntensityB.Size = new System.Drawing.Size(43, 20);
+            this.lightingIntensityB.TabIndex = 21;
+            // 
+            // lightingIntensityR
+            // 
+            this.lightingIntensityR.Location = new System.Drawing.Point(6, 114);
+            this.lightingIntensityR.Name = "lightingIntensityR";
+            this.lightingIntensityR.Size = new System.Drawing.Size(43, 20);
+            this.lightingIntensityR.TabIndex = 20;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 97);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(88, 13);
+            this.label6.TabIndex = 19;
+            this.label6.Text = "Lighting intensity:";
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.disabledBackfaceCulling);
+            this.groupBox7.Controls.Add(this.reverseBackfaceCulling);
+            this.groupBox7.Controls.Add(this.backfaceCulling);
+            this.groupBox7.Location = new System.Drawing.Point(3, 42);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(164, 55);
+            this.groupBox7.TabIndex = 15;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Backface culling";
+            // 
+            // backfaceCulling
+            // 
+            this.backfaceCulling.AutoSize = true;
+            this.backfaceCulling.Location = new System.Drawing.Point(3, 15);
+            this.backfaceCulling.Name = "backfaceCulling";
+            this.backfaceCulling.Size = new System.Drawing.Size(71, 17);
+            this.backfaceCulling.TabIndex = 0;
+            this.backfaceCulling.Text = "Backface";
+            this.backfaceCulling.UseVisualStyleBackColor = true;
+            this.backfaceCulling.CheckedChanged += new System.EventHandler(this.refreshScreenEvent);
+            // 
+            // reverseBackfaceCulling
+            // 
+            this.reverseBackfaceCulling.AutoSize = true;
+            this.reverseBackfaceCulling.Location = new System.Drawing.Point(3, 34);
+            this.reverseBackfaceCulling.Name = "reverseBackfaceCulling";
+            this.reverseBackfaceCulling.Size = new System.Drawing.Size(113, 17);
+            this.reverseBackfaceCulling.TabIndex = 1;
+            this.reverseBackfaceCulling.Text = "Reverse backface";
+            this.reverseBackfaceCulling.UseVisualStyleBackColor = true;
+            // 
+            // disabledBackfaceCulling
+            // 
+            this.disabledBackfaceCulling.AutoSize = true;
+            this.disabledBackfaceCulling.Checked = true;
+            this.disabledBackfaceCulling.Location = new System.Drawing.Point(95, 15);
+            this.disabledBackfaceCulling.Name = "disabledBackfaceCulling";
+            this.disabledBackfaceCulling.Size = new System.Drawing.Size(60, 17);
+            this.disabledBackfaceCulling.TabIndex = 2;
+            this.disabledBackfaceCulling.TabStop = true;
+            this.disabledBackfaceCulling.Text = "Disable";
+            this.disabledBackfaceCulling.UseVisualStyleBackColor = true;
+            this.disabledBackfaceCulling.CheckedChanged += new System.EventHandler(this.refreshScreenEvent);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(872, 620);
+            this.ClientSize = new System.Drawing.Size(924, 617);
             this.Controls.Add(this.tableLayoutPanel1);
             this.KeyPreview = true;
-            this.MinimumSize = new System.Drawing.Size(400, 400);
+            this.MinimumSize = new System.Drawing.Size(688, 656);
             this.Name = "Form1";
             this.Text = "3D Engine";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
@@ -385,7 +675,6 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.raster)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -395,10 +684,32 @@
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fogColorView)).EndInit();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.transparentFacesNumber)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.textureView)).EndInit();
+            this.flowLayoutPanel2.ResumeLayout(false);
+            this.flowLayoutPanel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingZ)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingAmbientG)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingAmbientB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingAmbientR)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingDiffuseG)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingDiffuseB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingDiffuseR)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingSpecularG)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingSpecularB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingSpecularR)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingShinning)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingIntensityG)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingIntensityB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightingIntensityR)).EndInit();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -425,7 +736,6 @@
         private System.Windows.Forms.CheckBox zBufforCheckBox;
         private System.Windows.Forms.PictureBox textureView;
         private System.Windows.Forms.Button loadTextureButton;
-        private System.Windows.Forms.CheckBox backfaceCullingCheckBox;
         private System.Windows.Forms.PictureBox fogColorView;
         private System.Windows.Forms.CheckBox drawFogCheckBox;
         private System.Windows.Forms.ColorDialog colorDialog1;
@@ -434,6 +744,34 @@
         private System.Windows.Forms.NumericUpDown transparentFacesNumber;
         private System.Windows.Forms.CheckBox transparentFacesCheckBox;
         private System.Windows.Forms.Button randomizeTransparentFacesButton;
+        private System.Windows.Forms.CheckBox drawPhongLightingCheckBox;
+        private System.Windows.Forms.NumericUpDown lightingShinning;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.NumericUpDown lightingSpecularG;
+        private System.Windows.Forms.NumericUpDown lightingSpecularB;
+        private System.Windows.Forms.NumericUpDown lightingSpecularR;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown lightingDiffuseG;
+        private System.Windows.Forms.NumericUpDown lightingDiffuseB;
+        private System.Windows.Forms.NumericUpDown lightingDiffuseR;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.NumericUpDown lightingAmbientG;
+        private System.Windows.Forms.NumericUpDown lightingAmbientB;
+        private System.Windows.Forms.NumericUpDown lightingAmbientR;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.NumericUpDown lightingY;
+        private System.Windows.Forms.NumericUpDown lightingZ;
+        private System.Windows.Forms.NumericUpDown lightingX;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private System.Windows.Forms.NumericUpDown lightingIntensityG;
+        private System.Windows.Forms.NumericUpDown lightingIntensityB;
+        private System.Windows.Forms.NumericUpDown lightingIntensityR;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.RadioButton disabledBackfaceCulling;
+        private System.Windows.Forms.RadioButton reverseBackfaceCulling;
+        private System.Windows.Forms.RadioButton backfaceCulling;
     }
 }
 

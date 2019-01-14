@@ -38,7 +38,7 @@ namespace Engine.WinForms
             FaceColor = faceColor;
         }
 
-        public void Draw(ref Bitmap b, Point[] points, ref float[,] zLevel, float[] pointsZLevel, bool zBuffor, float alpha = 1.0f, Bitmap texture = null)
+        public void Draw(ref Bitmap b, Point[] points, ref float[,] zLevel, float[] pointsZLevel, bool zBuffor, int faceInd, ref int[,] pointsToFacesInd, float alpha = 1.0f, Bitmap texture = null)
         {
             int maxy = 0;
             int miny = int.MaxValue;
@@ -167,6 +167,7 @@ namespace Engine.WinForms
                                         b.SetPixel(j, scanline + miny, newColor);
                                     }
                                 }
+                                pointsToFacesInd[j, scanline + miny] = faceInd;
                                 zLevel[j, scanline + miny] = actZ;
                             }
                         }
