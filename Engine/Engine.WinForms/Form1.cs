@@ -38,7 +38,6 @@ namespace Engine.WinForms
         private float[,] zLevel;
         private float[] pointsZLevel;
         private float[] backfacePointsZLevel;
-        private int[,] pointsToFacesInd;
 
         private int fps;
 
@@ -148,15 +147,6 @@ namespace Engine.WinForms
                 g.Clear(Color.White);
             if (drawFacesCheckBox.Checked)
             {
-                pointsToFacesInd = new int[raster.Width, raster.Height];
-                for (int i = 0; i < raster.Width; i++)
-                {
-                    for (int j = 0; j < raster.Height; j++)
-                    {
-                        pointsToFacesInd[i, j] = -1;
-                    }
-                }
-
                 if (transparentFacesCheckBox.Checked)
                 {
                     for (int i = 0; i < faces.Count; i++)
@@ -179,19 +169,6 @@ namespace Engine.WinForms
                     for (int i = 0; i < faces.Count; i++)
                     {
                         drawFace(ref b, i);
-                    }
-                }
-                if (drawPhongLightingCheckBox.Checked)
-                {
-                    for (int i = 0; i < b.Width; i++)
-                    {
-                        for (int j = 0; j < b.Height; j++)
-                        {
-                            if (pointsToFacesInd[i, j] == -1)
-                            {
-                                continue;
-                            }
-                        }
                     }
                 }
                 if (drawFogCheckBox.Checked)
@@ -259,9 +236,9 @@ namespace Engine.WinForms
                     return;
             }
             if (textureFaces.Checked)
-                f.Draw(ref b, facePoints, ref zLevel, facePointsZ, zBufforCheckBox.Checked, ind, ref pointsToFacesInd, alpha, texture);
+                f.Draw(ref b, facePoints, ref zLevel, facePointsZ, zBufforCheckBox.Checked, ind, alpha, texture);
             else
-                f.Draw(ref b, facePoints, ref zLevel, facePointsZ, zBufforCheckBox.Checked, ind, ref pointsToFacesInd, alpha);
+                f.Draw(ref b, facePoints, ref zLevel, facePointsZ, zBufforCheckBox.Checked, ind, alpha);
         }
 
         private void loadButton_Click(object sender, EventArgs e)
